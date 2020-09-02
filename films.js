@@ -1,12 +1,13 @@
 const filmForm = document.querySelector('.films');
 const results = document.querySelector('.results');
 const favs = document.querySelector('.favs');
-
+const search = document.querySelector('.search');
+const modal = document.querySelector('.modal');
+const modalInner = document.querySelector('.modalInner');
 
 let key = 'here';
 let searchResults = [];
 let favourites = [];
-
 
 // api call for search
 function apiCall(){
@@ -19,17 +20,21 @@ function apiCall(){
     }
   }).then((result) => {
     searchResults = result.Search
-    displayItems();
+    if (searchResults == undefined){
+      console.log('oh no!')
+      noResults();
+    } else {
+      displayItems();
+    }
   });
 }
 
 // handle submit 
 function handleSubmit(e){
   e.preventDefault();
-  const keyword = e.currentTarget.item.value;
+  const keyword = e.currentTarget.searchMovies.value;
   key = keyword;
   apiCall();
-  // e.target.reset(); 
 
   results.dispatchEvent(new CustomEvent('itemsUpdated'));
 }
@@ -39,12 +44,18 @@ function displayItems() {
   searchResults2 = [...searchResults]
   const html = searchResults2.map(item => `
   <li class="film">
-  <img src="${item.Poster}" onerror="this.src='./error.jpg'">
+  <img src="${item.Poster}" alt="movie poster of ${item.Title}" onerror="this.src='./error.jpg'" name="${item.imdbID}" >
   <span class="itemName">${item.Title}</span>
   <span class="itemYear">${item.Year}</span>
   <button aria-label="favourite ${item.Title}" value="${item.imdbID}">Favourite</button>
   </li>`).join('');
   results.innerHTML = html
+}
+
+// display no results message if no search results
+function noResults(){
+  const htmlError = `<p>No Results. Try Again!</p>`
+  results.innerHTML = htmlError
 }
 
 // when favourite button clicked adds id to favourite id, checks if it exists or favourites list too long
@@ -53,7 +64,7 @@ results.addEventListener('click', function (e) {
   if(favourites.includes(e.target.value)){
     return alert("already favourited!")
   }
-  else if(favourites.length >= 5){
+  else if (e.target.matches('button') && favourites.length >= 5){
     return alert('favourite list full, remove one to add more')
   }
   else if (e.target.matches('button') && !favourites.includes(e.target.value)) {
@@ -75,9 +86,8 @@ function apiCall2 (thing){
     }
   }).then((result) => {
     // console.log(result)
-    console.log(result.Poster)
     htmlFav = `<li class="film">
-  <img src="${result.Poster}" onerror="this.src='./error.jpg'" >
+  <img src="${result.Poster}" alt="movie poster of ${result.Title}" onerror="this.src='./error.jpg'" name="${result.imdbID}" tabindex="0">
   <span class="itemName">${result.Title}</span>
   <span class="itemYear">${result.Year}</span>
   <button aria-label="delete ${result.Title}" value="${result.imdbID}">Delete</button>
@@ -110,7 +120,7 @@ function mirrorToLocalStorage() {
 // puts favourites back on page if they exist 
 function restoreFromLocalStorage() {
   const lsItems = JSON.parse(localStorage.getItem('favourites'))
-  console.log("i restored!")
+  // console.log("i restored!")
 
   if (lsItems) {
     favourites.push(...lsItems)
@@ -134,6 +144,73 @@ favs.addEventListener('click', function (e) {
 })
 
 // Click poster to learn more about film 
+function apiCallDetails(thing){
+  $.ajax({
+    url: `http://www.omdbapi.com/?type=movie&apikey=a1aad806`,
+    method: `GET`,
+    dataType: `json`,
+    data: {
+      i: thing,
+    }
+  }).then((result)=>{
+    console.log(result)
+    htmlDetails = `
+      <h2>${result.Title}(${result.Year})</h2>
+      <img src="${result.Poster}" alt="movie poster of ${result.Title}" onerror="this.src='./error.jpg'" name="${result.imdbID}" tabindex="0">
+      <p>${result.Plot}</p>
+      <p>Director: ${result.Director}</p>
+      <p>Cast: ${result.Actors}</p>
+      <p>IMDb Rating: ${result.imdbRating}</p>
+      <a href="https://www.imdb.com/title/${result.imdbID}/">Go to imdb Page</a>
+    `
+    modalInner.innerHTML = htmlDetails
+    openModal();
+  });
+}
+
+search.addEventListener('click', function (e) {
+  const id = e.target.name
+  if (e.target.matches('img')) {
+    apiCallDetails(id);
+    // openModal();
+  }
+})
+
+search.addEventListener('keyup', function (e) {
+  const id = e.target.name
+  if (e.key === 'Enter' && e.target.matches('img')) {
+    apiCallDetails(id);
+    // openModal();
+  }
+})
+
+// open modal 
+function openModal() {
+  // first need to check if modal is open 
+  if (modal.matches('.open')) {
+    console.info('modal already open');
+    return;
+  }
+  modal.classList.add('open')
+
+  // event listeners bound to open modal 
+  window.addEventListener('keyup', handleKeyUp);
+}
+
+function closeModal() {
+  modal.classList.remove('open');
+  window.removeEventListener('keyup', handleKeyUp);
+}
+
+function handleKeyUp(event) {
+  if (event.key === 'Escape') return closeModal();
+}
+
+function handleClickOutside(e) {
+  if (e.target === e.currentTarget) {
+    closeModal();
+  }
+}
 
 
 
@@ -145,3 +222,4 @@ displayFavs();
 filmForm.addEventListener('submit', handleSubmit)
 favs.addEventListener('favsUpdated', displayFavs)
 favs.addEventListener('favsUpdated', mirrorToLocalStorage)
+modal.addEventListener('click', handleClickOutside);

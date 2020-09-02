@@ -11,17 +11,24 @@
   <div class="search">
 
     <form class="films" autocomplete="off">
-      <input type="text" name="item" id="item" required>
+      <label for="searchMovies">Search Movies</label>
+      <input type="text" name="searchMovies" id="searchMovies" required>
       <button type="submit">Search</button>
     </form>
 
     <ul class="results">
-    <h2>Favourites</h2>
-    </ul>
 
+    </ul>
+    
+    <h2>Favourites</h2>
     <ul class="favs">
 
     </ul>
+  </div>
+  <div class="modal">
+    <div class="modalInner">
+      <p>Oops! Something went wrong!</p>
+    </div>
   </div>
 
   <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
