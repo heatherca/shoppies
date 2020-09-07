@@ -3,30 +3,109 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,400;0,600;1,400&display=swap"
+    rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@0,400;0,600;1,600&display=swap"
+      rel="stylesheet">
   <link rel="stylesheet" href="./style.css">
-  <title>film testing</title>
+  <title>The Shoppies</title>
 </head>
 <body>
+  <header>
+    <div class="wrapper">
+    <div class="nomStatus">Search to nominate a film!</div>
+    <nav>
+      <a href="#searchSection">Search</a>
+      <a href="#favsSection">Nominees</a>
+    </nav>
+    </div>
+  </header>
+  <main>
+    <section class="searchSection" id="searchSection">
+      <div class="reel">
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+      </div>
+      <div class="wrapper">
+        <div class="half1">
+          <h1>The <br> Shoppies</h1>
+          <p>Movie awards for entrepreneurs.</p>
+        </div>
+        <div class="search">
+          <div class="howTo">
+            <p>The 2020 Shoppies are here! Start by searching below to browse movies. Click on the posters to learn more about each film. Pick the five films you think should be up for nomination.</p>
+          </div>
+          <form class="films" autocomplete="off">
+            <label class="sr-only" for="searchMovies">Search Movies</label>
+            <input type="text" name="searchMovies" id="searchMovies" placeholder="ex: The Intern" onfocus="this.placeholder = ''" onblur="this.placeholder = 'ex: The Intern'" required>
+            <button type="submit">Search</button>
+          </form>
+        </div>
+      </div>
+      <div class="reel">
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+      </div>
+    </section>
+    <section class="resultsSection">
+      <div class="wrapper">
+        <h2 class="sr-only">Results</h2>
+        <ul class="results">
 
-  <div class="search">
+        </ul>
+      </div>
+    </section>
+    <section class="favsSection" id="favsSection">
+      <div class="reel">
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+      </div>
+      <div class="wrapper">
+      <h2>Your Nominees</h2>
+      <ul class="favs">
 
-    <form class="films" autocomplete="off">
-      <label for="searchMovies">Search Movies</label>
-      <input type="text" name="searchMovies" id="searchMovies" required>
-      <button type="submit">Search</button>
-    </form>
-
-    <ul class="results">
-
-    </ul>
-    
-    <h2>Favourites</h2>
-    <ul class="favs">
-
-    </ul>
-  </div>
+      </ul>
+      </div>
+      <div class="reel">
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+      </div>
+    </section> 
+  </main>
   <div class="modal">
-    <div class="modalInner">
+    <div class="modalInner" role=”dialog” aria-modal="true">
       <p>Oops! Something went wrong!</p>
     </div>
   </div>

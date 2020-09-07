@@ -1,13 +1,23 @@
 const filmForm = document.querySelector('.films');
 const results = document.querySelector('.results');
 const favs = document.querySelector('.favs');
-const search = document.querySelector('.search');
+const main = document.querySelector('main');
 const modal = document.querySelector('.modal');
 const modalInner = document.querySelector('.modalInner');
+const nomStatus = document.querySelector('.nomStatus')
 
 let key = 'here';
 let searchResults = [];
 let favourites = [];
+let filmOpen = '';
+
+// handle submit 
+function handleSubmit(e){
+  e.preventDefault();
+  const keyword = e.currentTarget.searchMovies.value;
+  key = keyword;
+  apiCall();
+}
 
 // api call for search
 function apiCall(){
@@ -21,57 +31,55 @@ function apiCall(){
   }).then((result) => {
     searchResults = result.Search
     if (searchResults == undefined){
-      console.log('oh no!')
-      noResults();
+      results.innerHTML = `<p class="noResults">No Results. Try Again!</p>`
     } else {
       displayItems();
     }
   });
 }
 
-// handle submit 
-function handleSubmit(e){
-  e.preventDefault();
-  const keyword = e.currentTarget.searchMovies.value;
-  key = keyword;
-  apiCall();
-
-  results.dispatchEvent(new CustomEvent('itemsUpdated'));
-}
-
-// put items on page <img src="${item.Poster}">
+// put items on page
 function displayItems() {
   searchResults2 = [...searchResults]
   const html = searchResults2.map(item => `
   <li class="film">
-  <img src="${item.Poster}" alt="movie poster of ${item.Title}" onerror="this.src='./error.jpg'" name="${item.imdbID}" >
-  <span class="itemName">${item.Title}</span>
-  <span class="itemYear">${item.Year}</span>
-  <button aria-label="favourite ${item.Title}" value="${item.imdbID}">Favourite</button>
+  <img src="${item.Poster}" alt="movie poster of ${item.Title} press enter for details" onerror="this.src='./error.jpg'" name="${item.imdbID}" tabindex="0">
+  <p class="itemInfo">${item.Title} (${item.Year})</p>
+  <button aria-label="nominate ${item.Title}" value="${item.imdbID}">Nominate</button>
   </li>`).join('');
   results.innerHTML = html
+
+  results.dispatchEvent(new CustomEvent('itemsUpdated'));
 }
 
-// display no results message if no search results
-function noResults(){
-  const htmlError = `<p>No Results. Try Again!</p>`
-  results.innerHTML = htmlError
+// if movie already in favourites disable button aria-disabled= true and replace inner text with nominated 
+function checkResults (){
+  const resultsLi = document.querySelectorAll('.results button')
+  resultsLi.forEach(buttonGood)
+  function buttonGood(button) {
+    if (favourites.includes(button.value)) {
+      button.setAttribute('aria-disabled', 'true')
+      button.innerHTML = 'Nominated!';
+      // button.setAttribute('background-color', '#4B5832')
+      button.setAttribute("style", "background-color: #4B5832;")
+    }
+  }
 }
 
 // when favourite button clicked adds id to favourite id, checks if it exists or favourites list too long
 results.addEventListener('click', function (e) {
   const id = e.target.value
   if(favourites.includes(e.target.value)){
-    return alert("already favourited!")
+    return alert("Already nominated!")
   }
   else if (e.target.matches('button') && favourites.length >= 5){
-    return alert('favourite list full, remove one to add more')
+    return alert('Nomination list full, remove one to add more.')
   }
   else if (e.target.matches('button') && !favourites.includes(e.target.value)) {
-    console.log(id)
     favourites.push(id)
-    console.log('fav click fire')
+    
     favs.dispatchEvent(new CustomEvent('favsUpdated'));
+    results.dispatchEvent(new CustomEvent('itemsUpdated'));
   }
 })
 
@@ -85,7 +93,6 @@ function apiCall2 (thing){
       i: thing,
     }
   }).then((result) => {
-    // console.log(result)
     htmlFav = `<li class="film">
   <img src="${result.Poster}" alt="movie poster of ${result.Title}" onerror="this.src='./error.jpg'" name="${result.imdbID}" tabindex="0">
   <span class="itemName">${result.Title}</span>
@@ -93,46 +100,35 @@ function apiCall2 (thing){
   <button aria-label="delete ${result.Title}" value="${result.imdbID}">Delete</button>
   </li>`
   favs.insertAdjacentHTML('beforeend', htmlFav)
-  // favs.innerHTML = htmlFav
-  // favs.dispatchEvent(new CustomEvent('favsUpdated'));
   });
 }
 
 // displays favourite films on page 
 function displayFavs(){
-  console.log('display fire')
   favs.innerHTML= ""
   favourites2 = [...favourites].sort()
-  console.log(favourites2)
   favourites2.map(item=> apiCall2(item));  
-  // console.log(favourites);
-  // best = favourites[favourites.length - 1];
-  // console.log('hi')
-  // apiCall2(best)
 }
 
 // send to local storage for refresh 
 function mirrorToLocalStorage() {
   localStorage.setItem('favourites', JSON.stringify(favourites));
-  console.log('storing!')
 }
 
 // puts favourites back on page if they exist 
 function restoreFromLocalStorage() {
   const lsItems = JSON.parse(localStorage.getItem('favourites'))
-  // console.log("i restored!")
 
   if (lsItems) {
     favourites.push(...lsItems)
     favs.dispatchEvent(new CustomEvent('favsUpdated'));
-    console.log('this works')
   }
 }
 
 // remove favourite from list 
 function deleteItem(id) {
   favourites = favourites.filter(item => item !== id);
-  // console.log(favourites)
+
   favs.dispatchEvent(new CustomEvent('favsUpdated'))
 }
 
@@ -153,52 +149,53 @@ function apiCallDetails(thing){
       i: thing,
     }
   }).then((result)=>{
-    console.log(result)
     htmlDetails = `
-      <h2>${result.Title}(${result.Year})</h2>
       <img src="${result.Poster}" alt="movie poster of ${result.Title}" onerror="this.src='./error.jpg'" name="${result.imdbID}" tabindex="0">
-      <p>${result.Plot}</p>
-      <p>Director: ${result.Director}</p>
-      <p>Cast: ${result.Actors}</p>
-      <p>IMDb Rating: ${result.imdbRating}</p>
-      <a href="https://www.imdb.com/title/${result.imdbID}/">Go to imdb Page</a>
+      <div>
+        <h3>${result.Title}(${result.Year})</h3>
+        <p>${result.Plot}</p>
+        <p>Director: ${result.Director}</p>
+        <p>Cast: ${result.Actors}</p>
+        <p>IMDb Rating: ${result.imdbRating}</p>
+        <a href="https://www.imdb.com/title/${result.imdbID}/">Go to imdb Page</a>
+      </div>
     `
     modalInner.innerHTML = htmlDetails
+    filmOpen = `${result.imdbID}`
     openModal();
   });
 }
 
-search.addEventListener('click', function (e) {
+main.addEventListener('click', function (e) {
   const id = e.target.name
   if (e.target.matches('img')) {
     apiCallDetails(id);
-    // openModal();
   }
 })
 
-search.addEventListener('keyup', function (e) {
+main.addEventListener('keyup', function (e) {
   const id = e.target.name
   if (e.key === 'Enter' && e.target.matches('img')) {
     apiCallDetails(id);
-    // openModal();
   }
 })
 
 // open modal 
 function openModal() {
-  // first need to check if modal is open 
   if (modal.matches('.open')) {
     console.info('modal already open');
     return;
   }
   modal.classList.add('open')
+  modal.querySelector('a').focus();
 
-  // event listeners bound to open modal 
   window.addEventListener('keyup', handleKeyUp);
 }
 
+// close modal 
 function closeModal() {
   modal.classList.remove('open');
+  main.querySelector(`[name="${filmOpen}"]`).focus();
   window.removeEventListener('keyup', handleKeyUp);
 }
 
@@ -212,14 +209,32 @@ function handleClickOutside(e) {
   }
 }
 
+// Nominee Count change message and buttons in header depending on how many nominess there are
+function nomCount(){
+  count = favourites.length
+  if (count === 4) {
+    return nomStatus.innerHTML = `${5 - count} nomination left!`
+  }
+  else if (count < 5) {
+    console.log(`'two fire' ${count}`)
+    return nomStatus.innerHTML = `${5 - count} nominations left!`
+  }
+  else{
+    console.log(`'three fire' ${count}`)
+    nomStatus.innerHTML = `Nomination list full! Check your nominees.`
+  }
+}
 
 
 restoreFromLocalStorage();
 displayFavs();
+nomCount();
 
 
 // event listeners 
 filmForm.addEventListener('submit', handleSubmit)
+results.addEventListener('itemsUpdated', checkResults)
 favs.addEventListener('favsUpdated', displayFavs)
 favs.addEventListener('favsUpdated', mirrorToLocalStorage)
 modal.addEventListener('click', handleClickOutside);
+favs.addEventListener('favsUpdated', nomCount)
