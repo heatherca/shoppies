@@ -22,7 +22,7 @@ function handleSubmit(e){
 // api call for search
 function apiCall(){
   $.ajax({
-    url: `https://www.omdbapi.com/?type=movie&apikey=a1aad806`,
+    url: `http://www.omdbapi.com/?type=movie&apikey=a1aad806`,
     method: `GET`,
     dataType: `json`,
     data: {
