@@ -8,7 +8,7 @@ html { -moz-box-sizing: border-box; -webkit-box-sizing: border-box; box-sizing: 
 
 .sr-only { position: absolute; width: 1px; height: 1px; margin: -1px; border: 0; padding: 0; white-space: nowrap; clip-path: inset(100%); clip: rect(0 0 0 0); overflow: hidden;}
 
-/* REMOVE DEFAULTS  */
+/* REMOVE DEFAULTS + BASE STYLES  */
 h1,h2,h3,h4,p{
   padding: 0;
   margin: 0;
@@ -32,6 +32,7 @@ a{
   width:120px;
   text-align:center;
   font-family: 'Open Sans', sans-serif;
+  box-shadow: 3px 3px 2px 0px rgb(88, 88, 88)
 }
 
 button{
@@ -48,14 +49,12 @@ img{
   box-shadow: 5px 5px 7px 0px rgba(58,58,58,1);
 }
 
-
-
-/* BASE STYLES  */
 .wrapper{
   margin: 0 auto;
   width: 90vw;
   max-width: 1400px;
 }
+
 
 /* HEADER  */
 
@@ -72,10 +71,17 @@ header .wrapper{
   display:flex;
   align-items: center;
   justify-content: space-between;
-  margin-top: 5px;
+  margin-top: 10px;
   margin-bottom: 5px;
 }
 
+header a:hover, header a:focus{
+  background-color:#353F22;
+}
+
+header a:active{
+  box-shadow: 1px 1px 2px 0px rgb(88, 88, 88)
+}
 
 
 /* SEARCH SECTION */
@@ -158,6 +164,10 @@ input{
   padding: 5px 10px;
 }
 
+input:focus{
+  border:  3px solid #9ebc58;
+}
+
 .films button{
   width: 25%;
   background-color: #232a49;
@@ -166,11 +176,14 @@ input{
   color: white;
 }
 
+.films button:hover, .films button:focus{
+  background-color: #285178;
+}
 
 
 /* RESULTS  */
+
 .resultsSection{
-  background: linear-gradient(16deg, rgba(39,36,78,1) 0%, rgb(40, 96, 134) 47%, rgba(6,39,150,1) 100%); 
   background: #285178
 }
 
@@ -225,6 +238,17 @@ input{
   margin: 5vh;
 }
 
+.results img:focus{
+  border: 3px solid #285178;
+}
+
+.results button:focus, .results button:hover{
+  background-color: #285178;
+}
+
+.results button:active{
+   box-shadow: 2px 2px 3px 0px rgba(58,58,58,1);
+}
 
 
 /* FAVS SECTION  */
@@ -293,6 +317,9 @@ h2{
   color: white;
 }
 
+.favs button:hover, .favs button:focus{
+  background-color: #693b3b;
+}
 
 
 /* MODAL  */
