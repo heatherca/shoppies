@@ -30,8 +30,10 @@ function apiCall(){
     }
   }).then((result) => {
     searchResults = result.Search
+    document.querySelector('.resultsSection').setAttribute("style", "min-height: 40vh")
     if (searchResults == undefined){
       results.innerHTML = `<p class="noResults">No Results. Try Again!</p>`
+      document.querySelector('.resultsSection').scrollIntoView()
     } else {
       displayItems();
     }
@@ -48,7 +50,7 @@ function displayItems() {
   <button aria-label="nominate ${item.Title}" value="${item.imdbID}">Nominate</button>
   </li>`).join('');
   results.innerHTML = html
-
+  document.querySelector('.resultsSection').scrollIntoView()
   results.dispatchEvent(new CustomEvent('itemsUpdated'));
 }
 
@@ -94,9 +96,8 @@ function apiCall2 (thing){
     }
   }).then((result) => {
     htmlFav = `<li class="film">
-  <img src="${result.Poster}" alt="movie poster of ${result.Title}" onerror="this.src='./error.jpg'" name="${result.imdbID}" tabindex="0">
-  <span class="itemName">${result.Title}</span>
-  <span class="itemYear">${result.Year}</span>
+  <p class="itemInfo">${result.Title} (${result.Year})</p>
+  <img src="${result.Poster}" alt="movie poster of ${result.Title} press enter for details" onerror="this.src='./error.jpg'" name="${result.imdbID}" tabindex="0">
   <button aria-label="delete ${result.Title}" value="${result.imdbID}">Delete</button>
   </li>`
   favs.insertAdjacentHTML('beforeend', htmlFav)
@@ -152,7 +153,7 @@ function apiCallDetails(thing){
     htmlDetails = `
       <img src="${result.Poster}" alt="movie poster of ${result.Title}" onerror="this.src='./error.jpg'" name="${result.imdbID}" tabindex="0">
       <div>
-        <h3>${result.Title}(${result.Year})</h3>
+        <h3>${result.Title} (${result.Year})</h3>
         <p>${result.Plot}</p>
         <p>Director: ${result.Director}</p>
         <p>Cast: ${result.Actors}</p>
@@ -216,11 +217,9 @@ function nomCount(){
     return nomStatus.innerHTML = `${5 - count} nomination left!`
   }
   else if (count < 5) {
-    console.log(`'two fire' ${count}`)
     return nomStatus.innerHTML = `${5 - count} nominations left!`
   }
   else{
-    console.log(`'three fire' ${count}`)
     nomStatus.innerHTML = `Nomination list full! Check your nominees.`
   }
 }

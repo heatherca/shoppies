@@ -1,0 +1,120 @@
+/* header  */
+
+@media (max-width: 778px){
+  header .wrapper{
+    flex-direction: column;
+  }
+  header a{
+    margin-top: 5px;
+  }
+  .nomStatus{
+    text-align:center;
+  }
+}
+
+@media (max-width: 322px){
+  header a{
+    margin-left: 0;
+  }
+}
+
+
+/* search section  */
+
+@media (max-width: 1195px){
+  .search{
+    padding-right: 3vw;
+  }
+  .half1{
+    padding-left: 3vw;
+  }
+}
+
+@media (max-width: 925px){
+  .searchSection .wrapper{
+    flex-direction: column;
+  }
+  h1{
+    padding-top: 12vh;
+  }
+  .half1{
+    width: auto;
+  }
+  .search{
+    width: auto;
+    padding-top: 4vh;
+    padding-left:3vw;
+    padding-bottom: 4vh;
+  }
+}
+
+@media (max-width: 640px){
+  h1{
+    font-size: 50px;
+    padding-top: 14vh;
+  }
+  .search{
+    font-size: 16px;
+    line-height: 1.7rem;
+  }
+}
+
+@media (max-width: 322px){
+  .films{
+    flex-direction: column;
+  }
+  .films input{
+    width: 100%;
+  }
+  .films button{
+    width: 100%;
+    margin-top: 20px;
+    padding: 5px;
+  }
+}
+
+/* results section  */
+@media (max-width: 350px){
+  .results li{
+    margin: 0;
+    margin-top: 5vh;
+  }
+}
+
+/* nominees section  */
+@media (max-width: 550px){
+  .favs li{
+    width: 100%;
+  }
+}
+
+/* modal  */ 
+@media (max-width: 670px){
+  .modalInner h3{
+    font-size: 25px;
+  }
+}
+
+@media (max-width: 550px){
+  .modalInner{
+    display: block;
+    padding: 2vh 2vw;
+  }
+  .modalInner img{
+    height: 200px;
+  }
+  .modalInner div {
+    width:100%;
+    margin-left: 0;
+  }
+  .modalInner h3{
+    margin-bottom: 10px;
+  }
+  .modalInner a{
+    margin-top: 15px;
+  }
+  .modalInner div > * {
+    margin-top: 5px;
+    font-family: 'Open Sans', sans-serif;
+  }
+}

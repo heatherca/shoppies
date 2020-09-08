@@ -36,11 +36,16 @@ a{
 
 button{
   border:none;
+  cursor: pointer;
 }
 html{
   font-family: 'Open Sans', sans-serif;
   font-family: 'Roboto Mono', monospace;
-  /* font-size: 20px; */
+  scroll-behavior: smooth;
+}
+
+img{
+  box-shadow: 5px 5px 7px 0px rgba(58,58,58,1);
 }
 
 
@@ -55,8 +60,7 @@ html{
 /* HEADER  */
 
 header{
-  height: 7vh;
-  min-height:40px;
+  min-height: 7vh;
   width: 100%;
   position: fixed;
   background-color: #232a49;
@@ -68,6 +72,8 @@ header .wrapper{
   display:flex;
   align-items: center;
   justify-content: space-between;
+  margin-top: 5px;
+  margin-bottom: 5px;
 }
 
 
@@ -75,15 +81,13 @@ header .wrapper{
 /* SEARCH SECTION */
 
 .searchSection{
-  height: 100vh;
+  min-height: 100vh;
   background-color: #1F1F1F;
   color:#ffffff;
   display: flex;
-  /* flex-wrap:wrap; */
 }
 
 .searchSection .wrapper{
-  padding: 10px;
   display:flex;
   align-items: center;
 }
@@ -100,7 +104,7 @@ header .wrapper{
 
 .half1{
 width:50%;
-padding-left: 10vw;
+padding-left: 8vw;
 }
 
 .howTo{
@@ -123,7 +127,7 @@ h1{
 
 .reel{
   padding-top: 5vh;
-  height: 100vh;
+  min-height: 100vh;
   background-color: #303030;
   width: 5vw;
   display: flex;
@@ -194,6 +198,7 @@ input{
   width:220px;
   border-radius: 5px;
   box-shadow: 5px 5px 7px 0px rgba(58,58,58,1);
+  cursor:pointer;
 }
 .results p{
   width:220px;
@@ -227,7 +232,7 @@ input{
 .favsSection{
   background-color:#1F1F1F;
   display:flex;
-  height:100vh;
+  min-height:100vh;
   border-top: 1px solid #424242;
 }
 
@@ -237,6 +242,7 @@ input{
 
 .favs{
   display:flex;
+  justify-content: space-around;
   flex-wrap:wrap;
 }
 
@@ -248,101 +254,113 @@ input{
 }
 
 h2{
+  margin-top: 7vh;
   margin-bottom: 5vh;
   font-size: 35px;
   color: white;
+  text-shadow: 2px 2px 3px #9ebc58;
 }
 
 .favs li{
   background: white;
+  display:flex;
+  flex-direction: column;
+  justify-content: space-around;
   margin: 20px;
+  padding: 5px;
   width: calc(20% - 40px);
   min-width: 200px;
+  box-shadow: 3px 3px 3px 0px #9ebc58;
 }
 
-
-
-
+.favs p {
+  margin-bottom: 5px;
+}
 
 .favs img{
   width: 100%;
+  margin-top: 5px;
+  margin-bottom: 5px;
+  box-shadow: none;
+  display:block;
+  cursor:pointer;
 }
 
-
-
-img{
-  /* height: 50px; */
-  display: block;
+.favs button{
+  width: 100%;
+  padding: 5px;
+  background-color:#232a49;
+  color: white;
 }
 
 
 
 /* MODAL  */
 
- .modal {
-      position: fixed;
-      background: rgba(0, 0, 0, 0.5);
-      z-index: 2;
-      top: 0;
-      right: 0;
-      bottom: 0;
-      left: 0;
-      display: grid;
-      align-items: center;
-      justify-items: center;
-      pointer-events: none;
-      opacity: 0;
-      transition: opacity 0.5s;
-    }
+.modal {
+  position: fixed;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 2;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  display: grid;
+  align-items: center;
+  justify-items: center;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.5s;
+}
 
-    .modalInner {
-      border-radius: 4px;
-      background: white;
-      box-shadow: 0 0 10px 10px rgba(0, 0, 0, 0.05);
-      transform: translateY(-100vh);
-      transition: all 0.5s;
-      max-width: 900px;
-      min-height: 60vh;
-      color: black;
-      margin: 3rem;
-      padding: 5vh 2vw;
-      display:flex;
+.modalInner {
+  border-radius: 4px;
+  border: 6px solid #4b5832;
+  background: white;
+  box-shadow: 0 0 10px 10px rgba(0, 0, 0, 0.05);
+  transform: translateY(-100vh);
+  transition: all 0.5s;
+  width: 85vw;
+  max-width: 900px;
+  min-height: 60vh;
+  max-height: 95vh;
+  color: black;
+  padding: 5vh 2vw;
+  display:flex;
+}
 
-    }
+.modalInner div{
+  width:55%;
+  margin-left:5%;
+}
 
-    .modalInner div{
-      width:55%;
-      margin-left:5%;
-    }
+.modalInner div > * {
+  margin-top: 15px;
+  font-family: 'Open Sans', sans-serif;
+}
 
-    .modalInner div > * {
-      margin-top: 15px;
-      font-family: 'Open Sans', sans-serif;
-    }
+.modalInner h3{
+  font-family: 'Roboto Mono', monospace;
+  font-size: 30px;
+  margin-bottom: 30px;
+}
 
-    .modalInner h3{
-      font-family: 'Roboto Mono', monospace;
-      font-size: 30px;
-    }
+.modalInner img{
+  border: 3px solid #4b5832;
+  height: 100%;
+}
 
-    .modalInner img{
-      width: 40%;
-    }
+.modalInner a{
+  width: 200px;
+  margin: 0;
+  margin-top: 30px;
+}
 
-    .modalInner a{
-      width: 200px;
-      margin: 0;
-      margin-top: 20px;
-    }
+.modal.open {
+  opacity: 1;
+  pointer-events: all;
+}
 
-    .modal.open {
-      opacity: 1;
-      pointer-events: all;
-    }
-
-    .modal.open .modalInner {
-      transform: translateY(0);
-    }
-  /* .modal img{
-    width: auto;
-  } */
+.modal.open .modalInner {
+  transform: translateY(0);
+}
